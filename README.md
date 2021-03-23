@@ -1,4 +1,4 @@
-# marvel-api
+# Marvel-API
 
 Marvel API is a project running with Nodejs abstract from https://developer.marvel.com/
 
