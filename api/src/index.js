@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 
 //API router
 //Characters
-const CharacterServices = require('./src/services/CharacterServices');
+const CharacterServices = require('./services/CharacterServices');
 app.use('/characters', CharacterServices);
 
 

@@ -4,22 +4,52 @@ const {
 const express = require('express');
 const router = express.Router();
 
-const config = require('../../config');
+const config = require('../config');
 const createMd5 = require('../middleware/Md5Generation');
 
 
 //Get all characters ID
 router.get('/', async (req, res, next) => {
   try {
-    let hex = createMd5();
-    let result = await axios.get(`${config.marvel.API_DOMAIN}/characters`, {
-      params: hex
-    });
-    res.status(200).send(result.data.data);
+    let records = [];
+    let keepGoing = true;
+    let offset = 0;
+    let count = 0;
+    while (keepGoing) {
+      let response = await requestCharacterID(offset);
+      count++;
+      console.log([count, response.length]);
+
+      await records.push.apply(records, response);
+      offset+=100;
+      if (response.length < 100) {
+        keepGoing = false;
+        res.status(200).send(records);
+      }
+    }
+
   } catch (e) {
     console.log(e.message)
   } finally {}
 });
+
+const requestCharacterID = async (offset) => {
+  let hex = createMd5();
+  let payload = await axios.get(`${config.marvel.API_DOMAIN}/characters`, {
+    params: {
+      ...hex,
+      limit: 100,
+      offset: offset
+    }
+  });
+
+  //
+  const {
+    results
+  } = payload.data.data;
+  let filtered = results.map(a => a.id);
+  return filtered;
+}
 
 //Get characters by ID
 router.get('/:id', async (req, res, next) => {
@@ -33,7 +63,9 @@ router.get('/:id', async (req, res, next) => {
     });
 
     //
-    const { results } = axiosResponse.data.data;
+    const {
+      results
+    } = axiosResponse.data.data;
     const filtered = ['id', 'name', 'description'].reduce((r, k) => ({
       ...r,
       [k]: results[0][k]
