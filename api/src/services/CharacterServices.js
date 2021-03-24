@@ -6,10 +6,10 @@ const router = express.Router();
 
 const config = require('../config');
 const createMd5 = require('../middleware/Md5Generation');
-
+const memCaching = require('../middleware/Caching');
 
 //Get all characters ID
-router.get('/', async (req, res, next) => {
+router.get('/', memCaching(20), async (req, res, next) => {
   try {
     let records = [];
     let keepGoing = true;
