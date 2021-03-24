@@ -6,7 +6,8 @@ const createMd5 = () => {
 
   const data = timespan + config.marvel.PRIVATE_KEY + config.marvel.PUBLIC_KEY;
   return {
-    timespan: timespan,
+    ts: timespan,
+    apikey: config.marvel.PUBLIC_KEY,
     hash: crypto.createHash('md5').update(data).digest("hex")
   }
 }
