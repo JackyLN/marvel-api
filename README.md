@@ -41,7 +41,7 @@ yarn start
 
 ## Usage
 
-## API Docs:
+### API Docs:
 ```http
 / GET / http://localhost:8080/api-docs
 ```
