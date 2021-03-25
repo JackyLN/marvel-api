@@ -23,8 +23,6 @@ Update Marvel API private key and public key from [Marvel](https://developer.mar
 
 ## Installation
 
-### Configure config file .env
-
 1. Create a new file naem `.env` and copy the template from `.env.dist`
 2. In `.env` file, update the Private API and Public API getting from Marvel website and update to
 `{Marvel_API_Private_Key}` and `{Marvel_API_Private_Key}` accordingly.
