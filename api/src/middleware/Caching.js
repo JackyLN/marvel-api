@@ -5,19 +5,59 @@ let memcached = new Memcached("127.0.0.1:11211");
 const memCaching = (duration) => {
   return (req, res, next) => {
 
-    let key = "__express__" + req.originalUrl || req.url;
+    let key = "__marvel_character__" + req.originalUrl || req.url;
+    let keyCount = "__marvel_character_count__";
 
-    memcached.get(key, (err, data) => {
+    //check if total characters is still remain
+    memcached.get(keyCount, (err, data) => {
+      console.log({
+        data: data,
+        req: req.charactercount
+      });
       if (data) {
-        res.send(data);
-        return;
-      } else {
-        res.sendResponse = res.send;
-        res.send = (body) => {
-          memcached.set(key, body, (duration * 60), function (err) {});
-          res.sendResponse(body);
+        if (data !== req.charactercount) {
+
+          memcached.set(keyCount, req.charactercount, (duration * 60), function (err) {});
+
+          //character update
+          res.sendResponse = res.send;
+          res.send = (body) => {
+            memcached.set(key, body, (duration * 60), function (err) {});
+            res.sendResponse(body);
+          }
+          next();
+        } else {
+          //get cache
+          memcached.get(key, (err, data) => {
+            if (data) {
+              res.send(data);
+              return;
+            } else {
+              res.sendResponse = res.send;
+              res.send = (body) => {
+                memcached.set(key, body, (duration * 60), function (err) {});
+                res.sendResponse(body);
+              }
+              next();
+            }
+          })
+
         }
-        next();
+      } else {
+        memcached.set(keyCount, req.charactercount, (duration * 60), function (err) {});
+        memcached.get(key, (err, data) => {
+          if (data) {
+            res.send(data);
+            return;
+          } else {
+            res.sendResponse = res.send;
+            res.send = (body) => {
+              memcached.set(key, body, (duration * 60), function (err) {});
+              res.sendResponse(body);
+            }
+            next();
+          }
+        })
       }
     })
   }
