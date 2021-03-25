@@ -41,6 +41,11 @@ yarn start
 
 ## Usage
 
+## API Docs:
+```http
+/ GET / http://localhost:8080/api-docs
+```
+
 ### Get Array of all characters
 
 ```http
