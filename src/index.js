@@ -24,11 +24,15 @@ fs.access('./.env', fs.F_OK, (err) => {
     app.use(express.json());
     
     app.get('/', function (req, res) {
-      res.send('Helloworld');
+      res.send('Marvel API');
     })
 
     //Swagger API Docs
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    const swaggerOptions = {
+      customSiteTitle: "Marvel API",
+    }
+
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
     
     //API router
     //Characters
