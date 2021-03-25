@@ -1,0 +1,23 @@
+For caching solution for a Webserver, normally I will use Memcached (https://memcached.org/).
+It helps to cache all Marvel characters ID in caching server instead of sending request to Marvel API every time people hitting "/characters" endpoint.
+
+Testing without Caching server
+
+1st call: 68.82 seconds (68820 ms)
+2nd call: 65.88 seconds (65880 ms)
+3rd call: 69.86 seconds (69860 ms)
+4th call: 70.02 seconds (70072 ms)
+5th call: 132.66 seconds (132666 ms)
+
+Testing with Cache implementation:
+
+1st call:  72.12 seconds (72120 ms)
+2nd call: 1.5 seconds (1564 ms)
+3rd call: 1.1 seconds (1129 ms)
+4th call: 1.2 seconds (1220 ms)
+5th call: 1.1 seconds (1180 ms)
+
+The caching server currently hosted in a hosting server so it could be access globally with IP address and the port.
+
+"/character" endpoint include a real-time query to Marvel-API every single call. This query just to total number of character (query limit to 1 to save resource). 
+If the total number of character is different with Caching server, it will trigger the real query to Marvel API instead of getting data from Caching Server.
