@@ -8,7 +8,8 @@ const config = {
     API_DOMAIN: process.env.API_DOMAIN
   },
   server: {
-    APPLICATION_PORT: process.env.PORT
+    APPLICATION_PORT: process.env.PORT,
+    CACHING_SERVER: process.env.CACHING_SERVER
   }
 }
 

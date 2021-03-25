@@ -6,12 +6,16 @@ The Marvel-API abstract usage of [Marvel development](https://developer.marvel.c
 
 ## Pre-Installation
 
-### Docker
-This project makes use of Memcached as a Caching solution. Hence it was builded on 2 separate docker images.
+### NodeJS and Package Manager
 
-Read [here](https://www.docker.com/) for more information about Docker
+API is build based on NodeJS - a JavaScript runtime built on Chrome's V8 JavaScript engine.
+- Read more from [here](https://nodejs.org/en/about/)
+- Download and install from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-To process, download either [Docker Desktop](https://www.docker.com/products/docker-desktop) or [Docker Engine](https://docs.docker.com/engine/install/)
+Install Yarn as a Package Manager
+```bash
+npm install -g yarn
+```
 
 ### Marvel-API
 
@@ -19,40 +23,35 @@ Update Marvel API private key and public key from [Marvel](https://developer.mar
 
 ## Installation
 
-### Setup Dockerfile for API Services
+### Configure config file .env
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-Use Package Manager [Yarn](https://yarnpkg.com/) tro install 
+1. Create a new file naem `.env` and copy the template from `.env.dist`
+2. In `.env` file, update the Private API and Public API getting from Marvel website and update to
+`{Marvel_API_Private_Key}` and `{Marvel_API_Private_Key}` accordingly.
+3. From terminal, install all required packages
 
 ```bash
 yarn
 ```
 
-### Setup Dockerfile for Caching solution
-
-Locate Docker file in `/caching` and build the Image accordingly:
+4. Start the project
 ```bash
-cd caching
-docker build -t jackyln/memcached . 
-docker run -d --name caching -p 11211:11211 jackyln/memcached
+yarn start
 ```
-
-To check Caching Memory limit of a container
-
-```bash
-docker inspect caching | grep Memory
-```
-
-To create another container with different Memory allocated
-```bash
-docker run --name caching2 -m 8m -d -p 11212:11211 jackyln/memcached
-```
-where `-m [Memory (int)][memory unit (b, k, m or g)]`
-
 
 ## Usage
 
-## Contributing
+### Get Array of all characters
+
+```http
+/ GET / http://localhost:8080/characters
+```
+
+### Get single character
+
+```http
+/ GET / http://localhost:8080/characters/{character-id}
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

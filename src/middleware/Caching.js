@@ -1,12 +1,15 @@
 const Memcached = require('memcached');
+const config = require('../config');
 
-let memcached = new Memcached("127.0.0.1:11211");
+let memcached = new Memcached(config.server.CACHING_SERVER);
 
 const memCaching = (duration) => {
   return (req, res, next) => {
 
     let key = "__marvel_character__" + req.originalUrl || req.url;
     let keyCount = "__marvel_character_count__";
+
+    console.log(key);
 
     //check if total characters is still remain
     memcached.get(keyCount, (err, data) => {
