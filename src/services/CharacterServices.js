@@ -10,7 +10,7 @@ const memCaching = require('../middleware/Caching');
 const totalCharacter = require ('../middleware/CountCharacters');
 
 //Get all characters ID
-router.get('/', [totalCharacter, memCaching(20), async (req, res, next) => {
+router.get('/', [totalCharacter, memCaching(60), async (req, res, next) => {
   try {
     let records = [];
     let keepGoing = true;
@@ -31,8 +31,10 @@ router.get('/', [totalCharacter, memCaching(20), async (req, res, next) => {
     }
 
   } catch (e) {
-    console.log(e.message)
-    console.log(e)
+    if(e.isAxiosError) {
+      const err = e.response.data;
+      res.status(err.code).json(err.status);
+    }
   } finally {}
 }]);
 
@@ -47,20 +49,23 @@ router.get('/:id', async (req, res, next) => {
       params: hex
     });
 
-    //
     const {
       results
     } = payload.data.data;
+
+    //
     const filtered = ['id', 'name', 'description'].reduce((r, k) => ({
       ...r,
       [k]: results[0][k]
     }), {});
-    res.status(200).send(filtered);
+    res.status(200).json(filtered);
   } catch (e) {
-    console.log(e.message)
+    if(e.isAxiosError) {
+      const err = e.response.data;
+      res.status(err.code).json(err.status);
+    }
   } finally {}
 });
-
 
 const requestCharacterID = async (offset) => {
   let hex = createMd5();
@@ -79,6 +84,5 @@ const requestCharacterID = async (offset) => {
   let filtered = results.map(a => a.id);
   return filtered;
 }
-
 
 module.exports = router;

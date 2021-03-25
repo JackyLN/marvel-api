@@ -24,6 +24,11 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
+app.use(function(req, res, next) {
+  res.setHeader('Content-Type', 'application/json')
+  next();
+});
+
 app.get('/', function (req, res) {
   res.send('Marvel API');
 })

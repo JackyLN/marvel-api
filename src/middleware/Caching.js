@@ -8,9 +8,6 @@ const memCaching = (duration) => {
 
     let key = "__marvel_character__" + req.originalUrl || req.url;
     let keyCount = "__marvel_character_count__";
-
-    console.log(key);
-
     //check if total characters is still remain
     memcached.get(keyCount, (err, data) => {
       console.log({

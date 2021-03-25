@@ -26,15 +26,21 @@ Update Marvel API private key and public key from [Marvel](https://developer.mar
 1. Create a new file naem `.env` and copy the template from `.env.dist`
 2. In `.env` file, update the Private API and Public API getting from Marvel website and update to
 `{Marvel_API_Private_Key}` and `{Marvel_API_Private_Key}` accordingly.
-3. From terminal, install all required packages
+3. In `.env` file, update {Caching_Server} with a external server which is used as a caching server.
+4. From terminal, install all required packages
 
 ```bash
 yarn
 ```
 
-4. Start the project
+5. Start the project
 ```bash
 yarn start
+```
+
+6. To run Unit test
+```bash
+yarn test
 ```
 
 ## Usage
